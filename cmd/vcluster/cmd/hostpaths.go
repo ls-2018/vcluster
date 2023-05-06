@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/loft-sh/vcluster/debug"
 	podtranslate "github.com/loft-sh/vcluster/pkg/controllers/resources/pods/translate"
 	"github.com/loft-sh/vcluster/pkg/util/clienthelper"
 	"io/fs"
@@ -113,7 +114,7 @@ func MapHostPaths(options *context2.VirtualClusterOptions) error {
 		}
 	}
 
-	inClusterConfig := ctrl.GetConfigOrDie()
+	inClusterConfig := debug.GetHostConfig()
 
 	inClusterConfig.QPS = 40
 	inClusterConfig.Burst = 80

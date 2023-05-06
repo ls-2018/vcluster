@@ -340,6 +340,7 @@ func translateLabelsAnnotation(obj client.Object) string {
 }
 
 func (t *translator) translateVolumes(pPod *corev1.Pod, vPod *corev1.Pod) error {
+
 	for i := range pPod.Spec.Volumes {
 		if pPod.Spec.Volumes[i].ConfigMap != nil {
 			pPod.Spec.Volumes[i].ConfigMap.Name = configmaps.ConfigMapNameTranslator(types.NamespacedName{Name: pPod.Spec.Volumes[i].ConfigMap.Name, Namespace: vPod.Namespace}, nil)

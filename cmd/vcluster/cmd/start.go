@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/loft-sh/vcluster/debug"
 	"math"
 	"os"
 	"time"
@@ -12,10 +13,8 @@ import (
 	telemetrytypes "github.com/loft-sh/vcluster/pkg/telemetry/types"
 	"github.com/loft-sh/vcluster/pkg/util/blockingcacheclient"
 	"github.com/loft-sh/vcluster/pkg/util/pluginhookclient"
-
-	kerrors "k8s.io/apimachinery/pkg/api/errors"
-
 	corev1 "k8s.io/api/core/v1"
+	kerrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/loft-sh/vcluster/pkg/plugin"
 
@@ -121,7 +120,7 @@ func ExecuteStart(options *context2.VirtualClusterOptions) error {
 	}
 
 	// get host cluster config and tweak rate-limiting configuration
-	inClusterConfig := ctrl.GetConfigOrDie()
+	inClusterConfig := debug.GetHostConfig()
 	inClusterConfig.QPS = 40
 	inClusterConfig.Burst = 80
 	inClusterConfig.Timeout = 0
@@ -147,7 +146,7 @@ func ExecuteStart(options *context2.VirtualClusterOptions) error {
 	// wait until kube config is available
 	var clientConfig clientcmd.ClientConfig
 	err = wait.PollImmediate(time.Second, time.Hour, func() (bool, error) {
-		out, err := os.ReadFile(options.KubeConfigPath)
+		out, err := os.ReadFile(debug.GetVirtualConfigPath())
 		if err != nil {
 			if os.IsNotExist(err) {
 				klog.Info("couldn't find virtual cluster kube-config, will retry in 1 seconds")
@@ -230,7 +229,7 @@ func ExecuteStart(options *context2.VirtualClusterOptions) error {
 
 	telemetry.Collector.SetOptions(options)
 
-	virtualClusterConfig, err := clientConfig.ClientConfig()
+	virtualClusterConfig := debug.GetVirtualConfig()
 	if err != nil {
 		return err
 	}

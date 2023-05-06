@@ -86,7 +86,7 @@ rules:
   {{- end }}
   {{- end }}
   {{- if .Values.proxy.metricsServer.pods.enabled }}
-  - apiGroups: ["metrics.k8s.io"]
+  - apiGroups: [" v"]
     resources: ["pods"]
     verbs: ["get", "list"]
   {{- end }}

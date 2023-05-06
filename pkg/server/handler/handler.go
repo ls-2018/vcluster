@@ -106,6 +106,10 @@ func StripLeaveSlash(prefix string, h http.Handler) http.Handler {
 // for proxy connections that must upgrade.
 func makeUpgradeTransport(config *rest.Config) (proxy.UpgradeRequestRoundTripper, error) {
 	transportConfig, err := config.TransportConfig()
+	a := &net.Dialer{
+		// Timeout:   30 * time.Second,
+		KeepAlive: 120 * time.Second,
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -115,10 +119,7 @@ func makeUpgradeTransport(config *rest.Config) (proxy.UpgradeRequestRoundTripper
 	}
 	rt := utilnet.SetOldTransportDefaults(&http.Transport{
 		TLSClientConfig: tlsConfig,
-		DialContext: (&net.Dialer{
-			// Timeout:   30 * time.Second,
-			KeepAlive: 120 * time.Second,
-		}).DialContext,
+		DialContext:     a.DialContext,
 	})
 	upgrader, err := transport.HTTPWrappersForConfig(transportConfig, proxy.MirrorRequest)
 	if err != nil {

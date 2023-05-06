@@ -17,7 +17,7 @@ helm repo update
 See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation.
 
 ## Install Helm Chart
-
+   
 ```
 helm upgrade [RELEASE_NAME] loft-sh/vcluster-k8s -n [RELEASE_NAMESPACE] --create-namespace --install
 ```

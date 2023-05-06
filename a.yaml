@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: xxxx-xx
+  namespace: default
+spec:
+  ports:
+    - name: xxx
+      protocol: TCP
+      port: 12220
+      targetPort: 12220
+  type: ClusterIP

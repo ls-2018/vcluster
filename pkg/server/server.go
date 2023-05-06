@@ -170,6 +170,11 @@ func NewServer(ctx *context2.ControllerContext, requestHeaderCaFile, clientCaFil
 				SubResource:          "proxy",
 			},
 			{
+				GroupVersionResource: corev1.SchemeGroupVersion.WithResource("nodes"),
+				Verb:                 "*",
+				SubResource:          "",
+			},
+			{
 				GroupVersionResource: corev1.SchemeGroupVersion.WithResource("pods"),
 				Verb:                 "*",
 				SubResource:          "portforward",
@@ -202,7 +207,6 @@ func NewServer(ctx *context2.ControllerContext, requestHeaderCaFile, clientCaFil
 	h = filters.WithServiceCreateRedirect(h, uncachedLocalClient, uncachedVirtualClient, virtualConfig, ctx.Options.SyncLabels)
 	h = filters.WithRedirect(h, localConfig, uncachedLocalClient.Scheme(), uncachedVirtualClient, admissionHandler, s.redirectResources)
 	h = filters.WithMetricsProxy(h, localConfig, cachedVirtualClient)
-
 	if ctx.Options.ProxyMetricsServer {
 		h = filters.WithMetricsServerProxy(ctx, h, cachedLocalClient, cachedVirtualClient, localConfig)
 	}

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"github.com/loft-sh/vcluster/debug"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -17,7 +18,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog"
-	ctrl "sigs.k8s.io/controller-runtime"
 )
 
 // CertsCmd holds the certs flags
@@ -94,7 +94,7 @@ var certMap = map[string]string{
 }
 
 func ExecuteCerts(options *CertsCmd) error {
-	inClusterConfig := ctrl.GetConfigOrDie()
+	inClusterConfig := debug.GetHostConfig()
 	kubeClient, err := kubernetes.NewForConfig(inClusterConfig)
 	if err != nil {
 		return err

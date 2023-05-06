@@ -21,6 +21,19 @@ import (
 )
 
 func main() {
+	os.Setenv("NAMESPACE", "vcluster")
+	os.Args = append(os.Args, []string{
+		"start",
+		"--name=vcluster",
+		"--request-header-ca-cert=./pki/ca.crt",
+		"--client-ca-cert=./pki/ca.crt",
+		"--server-ca-cert=./pki/ca.crt",
+		"--server-ca-key=./pki/ca.key",
+		"--service-account=vc-workload-vcluster",
+		"--kube-config-context-name=my-vcluster",
+		"--leader-elect=false",
+		"--sync=-ingressclasses",
+	}...)
 	// set global logger
 	if os.Getenv("DEBUG") == "true" {
 		ctrl.SetLogger(log.NewLog(0))

@@ -18,7 +18,6 @@ type VirtualClusterOptions struct {
 	TLSSANs             []string `json:"tlsSans,omitempty"`
 	RequestHeaderCaCert string   `json:"requestHeaderCaCert,omitempty"`
 	ClientCaCert        string   `json:"clientCaCert,omitempty"`
-	KubeConfigPath      string   `json:"kubeConfig,omitempty"`
 
 	KubeConfigContextName     string   `json:"kubeConfigContextName,omitempty"`
 	KubeConfigSecret          string   `json:"kubeConfigSecret,omitempty"`
@@ -106,7 +105,6 @@ func AddFlags(flags *pflag.FlagSet, options *VirtualClusterOptions) {
 	flags.StringVar(&options.ClientCaCert, "client-ca-cert", "/data/server/tls/client-ca.crt", "The path to the client ca certificate")
 	flags.StringVar(&options.ServerCaCert, "server-ca-cert", "/data/server/tls/server-ca.crt", "The path to the server ca certificate")
 	flags.StringVar(&options.ServerCaKey, "server-ca-key", "/data/server/tls/server-ca.key", "The path to the server ca key")
-	flags.StringVar(&options.KubeConfigPath, "kube-config", "/data/server/cred/admin.kubeconfig", "The path to the virtual cluster admin kube config")
 	flags.StringSliceVar(&options.TLSSANs, "tls-san", []string{}, "Add additional hostname or IP as a Subject Alternative Name in the TLS cert")
 
 	flags.StringVar(&options.KubeConfigSecret, "out-kube-config-secret", "", "If specified, the virtual cluster will write the generated kube config to the given secret")

@@ -17,6 +17,7 @@ func NewRootCmd() *cobra.Command {
 
 // BuildRoot creates a new root command from the
 func BuildRoot() *cobra.Command {
+
 	rootCmd := NewRootCmd()
 
 	// add top level commands
